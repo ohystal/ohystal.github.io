@@ -18,6 +18,7 @@ const currentProject = ref(null);
 const props = defineProps({
   userPhoto: String,
   userDisplayName: String,
+  project: String,
 });
 
 const emit = defineEmits(["logout", "chooseProject"]);
@@ -49,7 +50,7 @@ const getProjects = async () => {
   });
 
   if (projects.length > 0) {
-    currentProject.value = projects[0];
+    currentProject.value = props.project;
   }
 };
 
@@ -68,6 +69,8 @@ const submitProject = async (newProject) => {
     review: [],
     complete: [],
   });
+  projects.length = 0
+  getProjects()
 };
 
 const chooseProject = () => {

@@ -9,7 +9,7 @@ import { ref } from "vue";
 const isLoggedIn = ref(null);
 const userName = ref(null);
 const userPhotoUrl = ref(null);
-const project = ref('jj6j6j6j6');
+const project = ref('');
 
 const changeProject = ({currentProject}) => {
   project.value = currentProject
@@ -43,10 +43,11 @@ const handleLogin = () => {
       <Header
         :userPhoto="userPhotoUrl"
         :userDisplayName="userName"
+        :project="project"
         @logout="handleLogOut"
         @chooseProject="changeProject"
       />
-      <Board :project="project"/>
+      <Board :project="project" :key="project"/>
     </template>
   </div>
 </template>

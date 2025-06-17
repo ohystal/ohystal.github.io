@@ -1,7 +1,7 @@
 <script setup>
 import { db } from "../firebaseConfig";
-import { motion, useDragControls } from "motion-v";
-import { getDoc, doc, updateDoc } from "firebase/firestore";
+import { motion } from "motion-v";
+import { doc, updateDoc, onSnapshot } from "firebase/firestore";
 import { reactive, ref } from "vue";
 import Task from "./Task.vue";
 
@@ -15,14 +15,17 @@ const sourceColumn = ref("");
 
 const getTasks = async (project) => {
   const docRef = doc(db, "projects", project);
-  const docSnap = await getDoc(docRef);
   
-  if (docSnap.exists()) {
-    projects.push({
-      id: docSnap.id,
-      ...docSnap.data(),
-    });
-  }
+  onSnapshot(docRef, (docSnap) => {
+    if (docSnap.exists()) {
+      projects.splice(0, projects.length);
+      
+      projects.push({
+        id: docSnap.id,
+        ...docSnap.data(),
+      });
+    }
+  });
 };
 
 getTasks(props.project);
@@ -49,8 +52,6 @@ const handleDragEnd = async (targetColumn) => {
 
   draggedItem.value = null;
   sourceColumn.value = "";
-  console.log(projects);
-  
 };
 </script>
 
@@ -76,7 +77,7 @@ const handleDragEnd = async (targetColumn) => {
             :drag="true"
             :dragConstraints="{ top: 0, left: 0, right: 0, bottom: 0 }"
           >
-            <Task :title="item.title" :description="item.description" />
+            <Task :title="item.title" :description="item.description"/>
           </motion.div>
         </li>
       </ul>
