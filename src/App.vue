@@ -9,16 +9,16 @@ import { ref } from "vue";
 const isLoggedIn = ref(null);
 const userName = ref(null);
 const userPhotoUrl = ref(null);
-const project = ref('');
+const project = ref("");
 
-const changeProject = ({currentProject}) => {
-  project.value = currentProject
-}
+const changeProject = ({ currentProject }) => {
+  project.value = currentProject;
+};
 
 const handleLogOut = () => {
   signOut(auth);
   isLoggedIn.value = false;
-  window.location.reload()
+  window.location.reload();
 };
 
 onAuthStateChanged(auth, (user) => {
@@ -47,7 +47,7 @@ const handleLogin = () => {
         @logout="handleLogOut"
         @chooseProject="changeProject"
       />
-      <Board :project="project" :key="project"/>
+      <Board :project="project" :key="project" />
     </template>
   </div>
 </template>
